@@ -1,0 +1,15 @@
+{
+  "reddit": {
+    "client_id": "client_id",
+    "client_secret": "client_secret",
+    "user_agent": "user_agent",
+    "username": "username",
+    "password": "password"
+  },
+  "twitch": {
+    "token": "token",
+    "client_id":"client_id",
+    "client_secret":"client_secret",
+    "grant_type":"client_credentials"
+  }
+}
