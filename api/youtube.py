@@ -25,7 +25,7 @@ def setupService():
 
     if not os.path.exists(secret_file):
         print('GitClips > Youtube API secret_file not found. You can download your secret file from the google cloud console. '
-              'Rename it to "youtube.json" and drop it in the app/api directory.')
+              'Rename it to "youtube.json" and drop it in the /api directory.')
         return False
 
     # Settings for the youtube's API service

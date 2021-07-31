@@ -4,30 +4,29 @@
 """
 
 import os
-from app.api import reddit, twitch, youtube
-
+from api import reddit, twitch, youtube
 
 def setup():
 
     if not os.path.exists('clips'):
         os.mkdir('clips')
-        print('GitClips > Clips folder created (app/clips)')
+        print('GitClips > Clips folder created (/clips)')
 
     if not os.path.exists('data'):
         os.mkdir('data')
-        print('GitClips > Data folder created (app/data)')
+        print('GitClips > Data folder created (/data)')
 
     if not os.path.exists('data/description.txt'):
         with open('data/description.txt', 'w') as description:
             description.write('Default description.')
             description.close()
-        print('GitClips > Default description created. (app/data/description.txt)')
+        print('GitClips > Default description created. (/data/description.txt)')
 
     if not os.path.exists('data/tags.txt'):
         with open('data/tags.txt', 'w') as description:
             description.write('gitclips,default,tags')
             description.close()
-        print('GitClips > Default tags created. (app/data/tags.txt)')
+        print('GitClips > Default tags created. (/data/tags.txt)')
 
 if __name__ == '__main__':
 
@@ -41,7 +40,7 @@ if __name__ == '__main__':
     if not service:
         exit()
 
-    # Request (6) clips from reddit [r/LiveStreamFails]
+    # Request (6) clips from reddit [r/LiveStreamFail]
     clips = reddit.getClips(6)
 
     # Go through each fetched clip, download it and upload to youtube
