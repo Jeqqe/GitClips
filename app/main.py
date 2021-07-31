@@ -1,0 +1,51 @@
+"""
+@File: main.py
+@Description: Main application logic
+"""
+
+import os
+from app.api import reddit, twitch, youtube
+
+
+def setup():
+
+    if not os.path.exists('clips'):
+        os.mkdir('clips')
+        print('GitClips > Clips folder created (app/clips)')
+
+    if not os.path.exists('data'):
+        os.mkdir('data')
+        print('GitClips > Data folder created (app/data)')
+
+    if not os.path.exists('data/description.txt'):
+        with open('data/description.txt', 'w') as description:
+            description.write('Default description.')
+            description.close()
+        print('GitClips > Default description created. (app/data/description.txt)')
+
+    if not os.path.exists('data/tags.txt'):
+        with open('data/tags.txt', 'w') as description:
+            description.write('gitclips,default,tags')
+            description.close()
+        print('GitClips > Default tags created. (app/data/tags.txt)')
+
+if __name__ == '__main__':
+
+    setup()
+
+    # Setup the youtube API service
+    service = youtube.setupService()
+
+    # Check if secret_file is successfully found, if not, break the loop and
+    # end program.
+    if not service:
+        exit()
+
+    # Request (6) clips from reddit [r/LiveStreamFails]
+    clips = reddit.getClips(6)
+
+    # Go through each fetched clip, download it and upload to youtube
+    # with title, description and tag
+    for clip in clips:
+        twitch.downloadClip(clip)
+        youtube.initUpload(service, clip)
