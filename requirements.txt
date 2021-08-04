@@ -1,0 +1,4 @@
+requests ~= 2.26.0
+httplib2 ~= 0.19.1
+google_auth_oauthlib ~= 0.4.1
+google-api-python-client ~= 2.15.0
