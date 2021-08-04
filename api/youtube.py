@@ -81,7 +81,7 @@ def resumableUpload(clip, video_data):
             if response is not None:
                 print(f'GitClips > Video id "{response["id"]}" has been uploaded!')
                 # Remove uploaded file from the app/clips directory
-                os.remove(f'clips/{clip["name"]}')
+                os.remove(f'clips/{str(clip["id"]) + ".mp4"}')
                 return
             else:
                 exit(f'GitClips > The upload failed with an unexpected response: {response}')
