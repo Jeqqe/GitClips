@@ -4,10 +4,13 @@
 """
 
 import requests
+from utils import log
 
 URL = 'https://www.reddit.com/r/LivestreamFail'
 
 def getClips(amount):
+
+    log('Fetching clips info from reddit...')
 
     # Request extra amount of posts from reddit
     # The amount is doubled incase some of the posts
@@ -61,4 +64,5 @@ def getClips(amount):
 
         count += 1
 
+    log(f'Clips have been fetched: \n{clips}')
     return clips

@@ -4,10 +4,12 @@
 """
 
 import requests
+from utils import log
 
 # Simple function to download the mp4 file based on
 # the clip's url.
 def downloadClip(clip):
+    log(f'Downloading clip: {clip}')
 
     name = str(clip['id']) + '.mp4'
     response = requests.get(clip['mp4'])

@@ -16,6 +16,8 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 from google.auth.transport.requests import Request
 
+from utils import log
+
 def setupService():
 
     # secret_file is fetched straight from the google's API credentials page
@@ -24,7 +26,7 @@ def setupService():
     token_file = 'api/YTtoken.pickle'
 
     if not os.path.exists(secret_file):
-        print('GitClips > Youtube API secret_file not found. You can download your secret file from the google cloud console. '
+        log('Youtube API secret_file not found. You can download your secret file from the google cloud console. '
               'Rename it to "youtube.json" and drop it in the /api directory.')
         return False
 
@@ -55,10 +57,10 @@ def setupService():
     # and settings and return it
     try:
         service = build(api_service_name, api_version, credentials=credentials)
-        print('GitClips > Connection to youtube API successful.')
+        log('Connection to youtube API successful.')
         return service
     except Exception as e:
-        print(e)
+        log(e)
 
 # Possible exceptions that cause the program to retry the uploading process
 RETRIABLE_EXCEPTIONS = (httplib2.HttpLib2Error, IOError)
@@ -75,38 +77,38 @@ def resumableUpload(clip, video_data):
     while response is None:
         try:
 
-            print('GitClips > Starting video upload...')
+            log('Starting video upload...')
             status, response = video_data.next_chunk()
 
             if response is not None:
-                print(f'GitClips > Video id "{response["id"]}" has been uploaded!')
+                log(f'Video id "{response["id"]}" has been uploaded!')
                 # Remove uploaded file from the app/clips directory
                 os.remove(f'clips/{str(clip["id"]) + ".mp4"}')
                 return
             else:
-                exit(f'GitClips > The upload failed with an unexpected response: {response}')
+                exit(f'The upload failed with an unexpected response: {response}')
 
         # If response caused and exception, update the error variable and attempt to
         # resume the upload if possible
         except HttpError as e:
             if e.resp.status in RETRIABLE_STATUS_CODES:
-                error = f'GitClips > A retriable HTTP error {e.resp.status} occured:\n{e.content}'
+                error = f'A retriable HTTP error {e.resp.status} occured:\n{e.content}'
             else:
                 raise
         except RETRIABLE_EXCEPTIONS as e:
-            error = f'GitClips > A retriable error occured: {e}'
+            error = f'A retriable error occured: {e}'
 
         MAX_RETRIES = 10
-        print(error)
+        log(error)
 
         retry += 1
         if retry > MAX_RETRIES:
-            exit('GitClips > No longer attempting to retry.')
+            exit('No longer attempting to retry.')
 
         max_sleep = 2 ** retry
         sleep_seconds = random.random() * max_sleep
 
-        print(f'GitClips > Sleeping {sleep_seconds} seconds and then retrying...')
+        log(f'Sleeping {sleep_seconds} seconds and then retrying...')
         time.sleep(sleep_seconds)
 
 def replacePlaceholders(text, clip):
@@ -149,8 +151,8 @@ def initUpload(service, clip):
         resumableUpload(clip, video_data)
 
     except Exception as e:
-        print('GitClips > Video not uploaded cause of the following error:')
-        print(e)
+        log('Video not uploaded cause of the following error:')
+        log(e)
         return False
 
     return True

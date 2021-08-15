@@ -6,27 +6,29 @@
 import os
 from api import reddit, twitch, youtube
 
+from utils import log
+
 def setup():
 
     if not os.path.exists('clips'):
         os.mkdir('clips')
-        print('GitClips > Clips folder created (/clips)')
+        log('Clips folder created (/clips)')
 
     if not os.path.exists('data'):
         os.mkdir('data')
-        print('GitClips > Data folder created (/data)')
+        log('Data folder created (/data)')
 
     if not os.path.exists('data/description.txt'):
         with open('data/description.txt', 'w') as description:
             description.write('Default description.')
             description.close()
-        print('GitClips > Default description created. (/data/description.txt)')
+        log('Default description created. (/data/description.txt)')
 
     if not os.path.exists('data/tags.txt'):
         with open('data/tags.txt', 'w') as description:
             description.write('gitclips,default,tags')
             description.close()
-        print('GitClips > Default tags created. (/data/tags.txt)')
+        log('Default tags created. (/data/tags.txt)')
 
 if __name__ == '__main__':
 
